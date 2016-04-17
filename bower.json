@@ -1,0 +1,22 @@
+{
+  "name": "nodeblog",
+  "description": "",
+  "main": "",
+  "authors": [
+    "Maksim Murygin <muriginm@gmail.com>"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/m-education/NodeBlog",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "public/components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "^3.3.6",
+    "jquery": "^2.2.3"
+  }
+}
