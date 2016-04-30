@@ -2,7 +2,6 @@
 
 const express = require('express');
 const router = express.Router();
-const mongo = require('mongodb');
 
 /* GET home page. */
 router.get('/', function(req, res) {
