@@ -136,3 +136,25 @@ ul.success li{
 .post-image {
     width: 100%;
 }
+
+footer{
+    margin-top:40px;
+    text-align: center;
+    height:30px;
+    border-top:1px solid #ccc;
+}
+
+.comment-form{
+    margin:30px 0;
+}
+
+.comment{
+    background: #ccc;
+    padding: 5px;
+    border: #666 solid 1px;
+    margin:15px 0 20px;
+}
+
+.comment-name{
+    font-weight: bold;
+}

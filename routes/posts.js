@@ -23,6 +23,16 @@ router.get('/', function(req, res) {
   });
 });
 
+router.get('/show/:id', function (req, res) {
+  postModel
+    .findById(req.params.id)
+    .then(post => {
+      res.render('post', {
+        post: post,
+      });
+    });
+});
+
 router.get('/category/:category', function (req, res) {
   postModel
     .find({
@@ -93,6 +103,53 @@ router.post('/add', function (req, res) {
       res.redirect('/posts');      
     }, () => {
       res.send('There was an issue submitting the post');
+    });
+});
+
+router.post('/addcomment', function (req, res) {
+  let id = req.body.postid;
+  let name  = req.body.name;
+  let email  = req.body.email;
+  let body  = req.body.body;
+  let commentDate = new Date();
+
+  req.checkBody('name', 'Name should be not empty').notEmpty();
+  req.checkBody('email', 'Email should be not empty').notEmpty();
+  req.checkBody('email', 'Email should be correct').isEmail();
+  req.checkBody('body', 'Comment should be not empty').notEmpty();
+
+  let errors = req.validationErrors();
+  if (errors) {
+    return postModel
+      .findById(id)
+      .then(post => {
+        res.render('post', {
+          title: 'Post',
+          errors: errors,
+          post: post,
+          name: name,
+          email: email,
+          body: body,
+        });
+      });      
+  }
+
+  postModel
+    .update({
+      _id: id,
+    }, {
+      $push: {
+        comments: {
+          name: name,
+          email: email,
+          body: body,
+          created: commentDate,
+        },
+      }
+    })
+    .then(() => {
+      req.flash('success', 'Comment was added');
+      res.redirect('/posts/show/' + id);
     });
 });
 
