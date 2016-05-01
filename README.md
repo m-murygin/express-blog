@@ -6,9 +6,9 @@
 3. Jade Template Language
 4. MongoDB
 5. Monk driver for MongoDB
-6. Express sessions and flash messages
-7. Form Validation
-8. Uploading files with multer
+6. Express Sessions and Flash Messages
+7. Express Form Validation
+8. Uploading files with Multer
 
 Before run
 ```
