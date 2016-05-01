@@ -29,11 +29,12 @@ app.set('view engine', 'jade');
 // Handle File Uploads
 app.use(multer({ dest: './uploads/images'}).any());
 
-// uncomment after placing your favicon in /public
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
+
+// Handle static files
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/uploads',  express.static(__dirname + '/uploads'));
 
@@ -62,6 +63,7 @@ app.use(expressValidator({
   }
 }));
 
+// init connect flash messages
 app.use(flash());
 app.use(function (req, res, next) {
   res.locals.messages = expressMessages(req, res);
@@ -74,6 +76,7 @@ app.use(function (req, res, next) {
   next();
 });
 
+// Set routes
 app.use('/', routes);
 app.use('/post', posts);
 app.use('/category', categories);

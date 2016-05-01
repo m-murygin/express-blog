@@ -4,7 +4,24 @@ const express = require('express');
 const router = express.Router();
 const _ = require('lodash');
 
-/* GET users listing. */
+router.get('/category/:category', function (req, res) {
+  const dbPosts = req.db.get('posts');
+  dbPosts
+    .find({
+      category: req.params.category,
+    },{
+      sort: {
+        date: -1
+      }
+    })
+    .then(posts => {
+      res.render('index', {
+        title: 'Post List',
+        posts: posts
+      });
+    });
+});
+
 router.get('/add', function(req, res) {
   req.db
     .get('categories')
@@ -24,18 +41,6 @@ router.post('/add', function (req, res) {
   let body = req.body.body;
   let author = req.body.author;
   let date = new Date();
-
-  // let mainImageName;
-  // if (req.files.mainimage) {
-  //   var mainImageOriginalName = req.files.mainimage.originName;
-  //   mainImageName = req.files.mainimage.name;
-  //   var mainImageMime = req.files.mainimage.mimetype;
-  //   var mainImagePath = req.files.mainimage.path;
-  //   var mainImageExt = req.files.mainimage.extension;
-  //   var mainImageSize = req.files.mainimage.size;
-  // } else {
-  //   mainImageName = 'noimage.png';
-  // }
 
   req.checkBody('post_title', 'Title field is required').notEmpty();
   req.checkBody('body', 'Body field is required');
