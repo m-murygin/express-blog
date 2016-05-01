@@ -10,12 +10,26 @@
 7. Express Form Validation
 8. Uploading files with Multer
 
-Before run
+### Getting Started
+
+Install MongoDB
+```
+echo "deb http://repo.mongodb.org/apt/debian wheezy/mongodb-org/3.0 main" | sudo tee /etc/apt/sources.list.d/mongodb-org-3.0.list
+sudo apt-get update
+sudo apt-get install -y mongodb-org
+```
+
+Run MongoDB
+```
+sudo service mongod start
+```
+
+Install NPM Packages
 ```
 npm install
 ```
 
-To run
+Run
 ```
 npm start
 ```
