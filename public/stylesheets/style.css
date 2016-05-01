@@ -134,6 +134,5 @@ ul.success li{
 }
 
 .post-image {
-    max-width: 600px;
-    max-height: 300px;
+    width: 100%;
 }

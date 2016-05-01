@@ -72,8 +72,7 @@ router.post('/add', function (req, res) {
       req.flash('success', 'Post Submitted');
       res.location('/');
       res.redirect('/');      
-    })
-    .catch(() => {
+    }, () => {
       res.send('There was an issue submitting the post');
     });
 });
