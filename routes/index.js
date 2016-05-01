@@ -7,11 +7,17 @@ const router = express.Router();
 router.get('/', function(req, res) {
   const db = req.db;
   let dbPosts = db.get('posts');
-  dbPosts.find({}, {}, function (err, posts) {
-    res.render('index', {
-      title: 'Post List',
-      posts: posts
-    });
+  dbPosts
+    .find({},{
+      sort: {
+        date: -1
+      }
+    })
+    .then(posts => {
+      res.render('index', {
+        title: 'Post List',
+        posts: posts
+      });
   });
 });
 

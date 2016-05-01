@@ -15,6 +15,7 @@ const db  = require('monk')('localhost/nodeblog');
 
 const routes = require('./routes/index');
 const posts = require('./routes/posts');
+const categories = require('./routes/categories');
 
 var app = express();
 app.locals.moment = require('moment');
@@ -24,7 +25,7 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
 // Handle File Uploads
-app.use(multer({ dest: './uploads/images'}). any() );
+app.use(multer({ dest: './uploads/images'}).any());
 
 // uncomment after placing your favicon in /public
 app.use(logger('dev'));
@@ -32,6 +33,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use('/uploads',  express.static(__dirname + '/uploads'));
 
 // Handle Express Sessions
 app.use(session({
@@ -71,7 +73,8 @@ app.use(function (req, res, next) {
 });
 
 app.use('/', routes);
-app.use('/posts', posts);
+app.use('/post', posts);
+app.use('/category', categories);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

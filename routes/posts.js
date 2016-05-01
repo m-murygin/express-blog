@@ -2,6 +2,7 @@
 
 const express = require('express');
 const router = express.Router();
+const _ = require('lodash');
 
 /* GET users listing. */
 router.get('/add', function(req, res) {
@@ -23,19 +24,20 @@ router.post('/add', function (req, res) {
   let body = req.body.body;
   let author = req.body.author;
   let date = new Date();
-  
-  if (req.files.mainimage) {
-    var mainImageOriginalName = req.files.mainimage.originName;
-    var mainImageName = req.files.mainimage.name;
-    var mainImageMime = req.files.mainimage.mimetype;
-    var mainImagePath = req.files.mainimage.path;
-    var mainImageExt = req.files.mainimage.extension;
-    var mainImageSize = req.files.mainimage.size;
-  } else {
-    var mainImageName = 'noimage.png';
-  }
 
-  req.checkBody('title', 'Title field is required').notEmpty();
+  // let mainImageName;
+  // if (req.files.mainimage) {
+  //   var mainImageOriginalName = req.files.mainimage.originName;
+  //   mainImageName = req.files.mainimage.name;
+  //   var mainImageMime = req.files.mainimage.mimetype;
+  //   var mainImagePath = req.files.mainimage.path;
+  //   var mainImageExt = req.files.mainimage.extension;
+  //   var mainImageSize = req.files.mainimage.size;
+  // } else {
+  //   mainImageName = 'noimage.png';
+  // }
+
+  req.checkBody('post_title', 'Title field is required').notEmpty();
   req.checkBody('body', 'Body field is required');
 
   let errors = req.validationErrors();
@@ -52,21 +54,28 @@ router.post('/add', function (req, res) {
 
   let posts = req.db.get('posts');
 
-  posts.insert({
-    title: title,
-    category: category,
-    body: body,
-    author: author,
-    date: date,
-  }, function (err, post) {
-    if (err) {
-      res.send('There was an issue submitting the post');
-    } else {
+  let mainImage = _.find(req.files, {
+    fieldname: 'mainimage'
+  });
+  let mainImageFileName = mainImage ? mainImage.filename : null;
+
+  posts
+    .insert({
+      title: title,
+      category: category,
+      body: body,
+      author: author,
+      date: date,
+      mainImage: mainImageFileName
+    })
+    .then(() => {
       req.flash('success', 'Post Submitted');
       res.location('/');
-      res.redirect('/');
-    }
-  });
+      res.redirect('/');      
+    })
+    .catch(() => {
+      res.send('There was an issue submitting the post');
+    });
 });
 
 module.exports = router;
