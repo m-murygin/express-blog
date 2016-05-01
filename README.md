@@ -1,12 +1,12 @@
 # Blog
 ### Build with Expess JS
 
-Before start
+Before run
 ```
 npm install
 ```
 
 To run
 ```
-npm run
+npm start
 ```
