@@ -8,10 +8,8 @@ const bodyParser = require('body-parser');
 const session = require('express-session');
 const multer = require('multer');
 const flash = require('connect-flash');
-const mongo = require('mongodb');
 const expressValidator = require('express-validator');
 const expressMessages = require('express-messages');
-const db  = require('monk')('localhost/nodeblog');
 
 const routes = require('./routes/index');
 const posts = require('./routes/posts');
@@ -70,16 +68,10 @@ app.use(function (req, res, next) {
   next();
 });
 
-// Make our db accessible to our router
-app.use(function (req, res, next) {
-  req.db = db;
-  next();
-});
-
 // Set routes
 app.use('/', routes);
-app.use('/post', posts);
-app.use('/category', categories);
+app.use('/posts', posts);
+app.use('/categories', categories);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

@@ -4,9 +4,27 @@ const express = require('express');
 const router = express.Router();
 const _ = require('lodash');
 
+const db = require('../models');
+const postModel = db.get('posts');
+const categoryModel = db.get('categories');
+
+router.get('/', function(req, res) {
+  postModel
+    .find({},{
+      sort: {
+        date: -1
+      }
+    })
+    .then(posts => {
+      res.render('index', {
+        title: 'Post List',
+        posts: posts
+      });
+  });
+});
+
 router.get('/category/:category', function (req, res) {
-  const dbPosts = req.db.get('posts');
-  dbPosts
+  postModel
     .find({
       category: req.params.category,
     },{
@@ -23,8 +41,7 @@ router.get('/category/:category', function (req, res) {
 });
 
 router.get('/add', function(req, res) {
-  req.db
-    .get('categories')
+  categoryModel
     .find({})
     .then(cats => {
       res.render('add_post', {
@@ -57,14 +74,12 @@ router.post('/add', function (req, res) {
     return;
   }
 
-  let posts = req.db.get('posts');
-
   let mainImage = _.find(req.files, {
     fieldname: 'mainimage'
   });
   let mainImageFileName = mainImage ? mainImage.filename : null;
 
-  posts
+  postModel
     .insert({
       title: title,
       category: category,
@@ -75,8 +90,7 @@ router.post('/add', function (req, res) {
     })
     .then(() => {
       req.flash('success', 'Post Submitted');
-      res.location('/');
-      res.redirect('/');      
+      res.redirect('/posts');      
     }, () => {
       res.send('There was an issue submitting the post');
     });

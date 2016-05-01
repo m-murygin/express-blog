@@ -2,6 +2,8 @@
 
 const express = require('express');
 const router = express.Router();
+const db = require('../models');
+const dbCategories = db.get('categories');
 
 router.get('/add', function(req, res) {
   res.render('add_category', {
@@ -19,14 +21,13 @@ router.post('/add', function (req, res) {
     });
   }
 
-  const dbCategories = req.db.get('categories');
   dbCategories
     .insert({
       title: req.body.title,
     })
     .then(() => {
       req.flash('success', 'Category was created');
-      res.redirect('/');
+      res.redirect('/posts');
     });
 });
 
