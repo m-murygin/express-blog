@@ -1,5 +1,4 @@
 # Blog
-### Build with Expess JS
 
 #### Technologies
 1. NodeJS
